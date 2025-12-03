@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package programacionii.SemanaVIII;
-
+import java.lang.IndexOutOfBoundsException;
 /**
  *
  * @author David
@@ -35,6 +35,7 @@ public class Lista {
             }
             
             temp.sigte=obj;
+            System.out.println("¡Se ha agregado el nuevo Nodo!");
         }
         size++;
     }
@@ -63,31 +64,90 @@ public class Lista {
     }
     
     //Funcion de eliminar
-    public void eliminar(int code){
+    public boolean eliminar(int code){
         Nodo temp  = inicio;
         Nodo ant = null;
         
         if(isEmpty()){
-            return;
+            return false;
         }
         
         if(temp.codigo==code){
             inicio = temp.sigte;
-            return;
+            size--;
+            return true;
         }
         
         while(temp!=null){
             if(temp.codigo==code){
                 ant.sigte=temp.sigte;
-                return;
+                size--;
+                return true;
             }
             
             ant=temp;
             temp = temp.sigte;
         }
         
-        return;
+        return false;
         
     }
+    
+    
+    //Funcion para obtener el tamanio de la lista
+    public int size(){
+        return size;
+    }
+    
+    
+    //Funcion para agregar en posicion especifica
+    public void add(int index, Nodo obj) throws IndexOutOfBoundsException{
+        
+        if(index<0 || index> size){
+            throw new IndexOutOfBoundsException();
+        }
+        
+        
+        //Variable de referencia para posicion contadora
+        Nodo temp = inicio;
+        Nodo next=null;
+        int i=0;
+        
+        if(isEmpty()){
+            System.out.println("La lista esta vacia");
+            return;
+        }
+        
+        if(index==0){//considerando el caso que quiere agregar el nuevo nodo en el HEAD
+            obj.sigte=temp;//el nuevo nodo tiene como el siguiente al viejo inicio
+            inicio=obj;//cambiamos el inicio por el nuevo nodo
+            System.out.println("Se ha agregado nuevo nodo en posicion "+(i+1));
+            size++;
+            return;
+        }
+        
+        //caso que quiera agregar en un nodo distinto al inicio
+        Nodo ant = null;
+        
+        //Verificar si es el index buscado
+        while(temp!=null){
+            //
+            if(i==index){
+                //agregar la referencia del anterior como el nuevo, y del nuevo como el siguiente
+                next=temp;//el que habia antes se desplaza hacia adelante
+                ant.sigte=obj;
+                obj.sigte=next;
+                System.out.println("Se ha agregado nuevo nodo en posicion "+(i+1));
+                size++;
+                break;
+            }
+            ant=temp;
+            temp=temp.sigte;
+            i++;
+        }
+        
+    }
+    
+    
     
 }
